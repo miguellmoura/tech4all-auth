@@ -64,6 +64,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.GET.name())).permitAll()
                         .requestMatchers(mvc.pattern(HttpMethod.POST, "/cadastro")).permitAll()
+                        .requestMatchers(mvc.pattern(HttpMethod.POST, "/login")).permitAll()
                         .requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll()
                         .anyRequest().authenticated()
                 )
