@@ -38,4 +38,8 @@ public class UserService {
         return new LoginResponse(jwt.createToken(user));
     }
 
+    public boolean isValid (String token) {
+        return jwt.isValid(token);
+    }
+
 }

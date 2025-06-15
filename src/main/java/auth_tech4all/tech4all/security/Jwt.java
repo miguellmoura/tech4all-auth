@@ -79,6 +79,27 @@ public class Jwt {
         }
     }
 
+    public boolean isValid(String token) {
+        try {
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(Keys.hmacShaKeyFor(SECRET.getBytes(StandardCharsets.UTF_8)))
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+
+            if (!ISSUER.equals(claims.getIssuer())) {
+                log.debug("Token inválido: issuer incorreto");
+                return false;
+            }
+
+            return true;
+        } catch (Exception e) {
+            log.debug("Token inválido: {}", e.getMessage());
+            return false;
+        }
+    }
+
+
     private static ZonedDateTime utcNow() {
         return ZonedDateTime.now(ZoneOffset.UTC);
     }

@@ -10,9 +10,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Collections;
 
 @RestController
 public class UserController {
@@ -39,6 +39,17 @@ public class UserController {
         }
 
         return new ResponseEntity<>(loginResponse, HttpStatus.OK);
+    }
+
+    @GetMapping("/auth/validate-token")
+    public ResponseEntity<?> validateToken(@RequestHeader("Authorization") String authHeader) {
+        try {
+            String token = authHeader.replace("Bearer ", "");
+            boolean isValid = userService.isValid(token);
+            return ResponseEntity.ok(Collections.singletonMap("valid", isValid));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("valid", false));
+        }
     }
 
 
