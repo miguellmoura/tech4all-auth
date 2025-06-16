@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.List;
 
 @RestController
 public class UserController {
@@ -50,6 +51,24 @@ public class UserController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("valid", false));
         }
+    }
+
+    @GetMapping("/usuarios")
+    public ResponseEntity<List<UserDTO>> listarUsuarios() {
+        List<UserDTO> usuarios = userService.listarTodos();
+        return ResponseEntity.ok(usuarios);
+    }
+
+    @PutMapping("/usuarios/{email}")
+    public ResponseEntity<UserDTO> atualizarUsuario(@PathVariable String email, @RequestBody UserDTO userDTO) {
+        UserDTO atualizado = userService.atualizarUsuario(email, userDTO);
+        return ResponseEntity.ok(atualizado);
+    }
+
+    @DeleteMapping("/usuarios/{email}")
+    public ResponseEntity<Void> deletarUsuario(@PathVariable String email) {
+        userService.deletarUsuario(email);
+        return ResponseEntity.noContent().build();
     }
 
 
