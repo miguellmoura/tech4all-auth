@@ -2,6 +2,7 @@ package auth_tech4all.tech4all.controller;
 
 import auth_tech4all.tech4all.model.UserTech4All;
 import auth_tech4all.tech4all.security.Jwt;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +41,9 @@ public class UserService {
             throw new RuntimeException("Senha incorreta");
         }
 
-        return new LoginResponse(jwt.createToken(user));
+        System.out.println(user.getNome());
+
+        return new LoginResponse(new UserLoginResponseDTO(user.getNome(), user.getEmail(), user.getContato(), user.getRole()), jwt.createToken(user));
     }
 
     public boolean isValid (String token) {
