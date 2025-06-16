@@ -19,6 +19,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
+import java.util.List;
+
 @Configuration
 @EnableMethodSecurity
 @SecurityScheme(
@@ -47,7 +49,7 @@ public class SecurityConfig {
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.addAllowedOrigin("*");
-        config.addAllowedOrigin("http://localhost:4200");
+        config.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost:58522"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
