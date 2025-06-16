@@ -32,9 +32,14 @@ public class UserService {
 
     public LoginResponse login (UserLoginDTO userLoginDTO) {
         UserTech4All user = userRepository.findByEmail(userLoginDTO.getEmail());
-        if (!Objects.equals(userLoginDTO.getPassword(), user.getPassword())) {
-            return null;
+        if (user == null) {
+            throw new RuntimeException("Usuário não encontrado");
         }
+
+        if (!Objects.equals(userLoginDTO.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Senha incorreta");
+        }
+
         return new LoginResponse(jwt.createToken(user));
     }
 
